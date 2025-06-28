@@ -1,8 +1,7 @@
-
 'use client';
 
 import { useState } from 'react';
-import { Container, Form, Button, Spinner, Alert, Card } from 'react-bootstrap';
+import { Container, Form, Button, Spinner, Alert, Card, Navbar } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function HomePage() {
@@ -41,52 +40,69 @@ export default function HomePage() {
   };
 
   return (
-    <Container className="mt-5">
-      <h1 className="text-center mb-4">URL Summarizer</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="url"
-            placeholder="Enter URL to summarize"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            required
-          />
-        </Form.Group>
-        <div className="d-grid">
-          <Button variant="primary" type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Spinner
-                  as="span"
-                  animation="border"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-                <span className="visually-hidden">Loading...</span>
-              </>
-            ) : (
-              'Summarize'
-            )}
-          </Button>
-        </div>
-      </Form>
+    <div className="d-flex flex-column min-vh-100 bg-light">
+      <Navbar bg="primary" variant="dark" expand="lg" className="mb-4">
+        <Container>
+          <Navbar.Brand href="#home">URL Summarizer</Navbar.Brand>
+        </Container>
+      </Navbar>
 
-      {error && (
-        <Alert variant="danger" className="mt-4">
-          {error}
-        </Alert>
-      )}
+      <Container className="flex-grow-1 d-flex flex-column justify-content-center align-items-center py-5">
+        <h1 className="text-center mb-3">URL Summarizer</h1>
+        <p className="text-center mb-5 text-muted lead">
+          Enter a URL below to get a concise, one-sentence summary of its content.
+        </p>
+        <Form onSubmit={handleSubmit} className="w-100" style={{ maxWidth: '600px' }}>
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="url"
+              placeholder="Enter URL to summarize (e.g., https://example.com)"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <div className="d-grid">
+            <Button variant="primary" type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  <span className="visually-hidden">Summarizing...</span>
+                </>
+              ) : (
+                'Summarize'
+              )}
+            </Button>
+          </div>
+        </Form>
 
-      {summary && (
-        <Card className="mt-4">
-          <Card.Body>
-            <Card.Title>Summary</Card.Title>
-            <Card.Text>{summary}</Card.Text>
-          </Card.Body>
-        </Card>
-      )}
-    </Container>
+        {error && (
+          <Alert variant="danger" className="mt-4 w-100" style={{ maxWidth: '600px' }}>
+            {error}
+          </Alert>
+        )}
+
+        {summary && (
+          <Card className="mt-4 w-100" style={{ maxWidth: '600px' }}>
+            <Card.Body>
+              <Card.Title>Summary</Card.Title>
+              <Card.Text>{summary}</Card.Text>
+            </Card.Body>
+          </Card>
+        )}
+      </Container>
+
+      <footer className="bg-dark text-white text-center py-3 mt-auto">
+        <Container>
+          <p className="mb-0">&copy; {new Date().getFullYear()} URL Summarizer. All rights reserved.</p>
+        </Container>
+      </footer>
+    </div>
   );
 }
